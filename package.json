@@ -23,6 +23,9 @@
   "scripts": {
     "start": "nodemon index.js --exec babel-node --presets es2015,stage-2"
   },
+  "engines": {
+    "node": "8.11.2"
+  },
   "author": "Yiren Wang",
   "license": "ISC",
   "description": ""
