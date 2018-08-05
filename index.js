@@ -4,9 +4,9 @@ import httpStatus from 'http-status';
 import querystring from 'querystring';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-import { clientId, redirectUri, clientSecret, port, host, jwtSecret } from './config';
-
+if (process.env !== 'PRODUCTION') dotenv.config();
 const app = express();
 
 const login = (req, res) => {
@@ -15,17 +15,17 @@ const login = (req, res) => {
     'https://gw.prd.api.enedis.fr/v1/oauth2/authorize' +
     '?' +
     'client_id=' +
-    clientId +
+    process.env.CLIENT_ID +
     '&response_type=code' +
     '&' +
     'redirect_uri=' +
-    redirectUri +
+    process.env.REDIRECT_URI +
     '&' +
     'state=' +
     req.state +
     '&' +
     'user_type=external';
-
+  console.log(redirectUrl);
   return res.redirect(redirectUrl);
 };
 
@@ -36,12 +36,14 @@ const redirect = (req, res) => {
 
   const postData = querystring.stringify({
     code: req.query.code,
-    client_id: clientId,
-    client_secret: clientSecret,
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
     grant_type: 'authorization_code',
   });
 
-  const url = `https://gw.prd.api.enedis.fr/v1/oauth2/token?redirect_uri=${redirectUri}`;
+  const url = `https://gw.prd.api.enedis.fr/v1/oauth2/token?redirect_uri=${
+    process.env.REDIRECT_URI
+  }`;
   const options = {
     method: 'post',
     headers: {
@@ -67,7 +69,9 @@ const redirect = (req, res) => {
         id: 'tata',
         accessToken: data.access_token,
       };
-      res.redirect(`enedis-third-party-app://auth_complete?user=${jwt.sign(user, jwtSecret)}`);
+      res.redirect(
+        `enedis-third-party-app://auth_complete?user=${jwt.sign(user, process.env.JWT_SECRET)}`,
+      );
     })
     /*
     .then(data => {
@@ -102,4 +106,4 @@ app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
 app.get('/me', getUser);
-app.listen(port, () => console.log('Enedis example app'));
+app.listen(3001, () => console.log('Enedis example app'));

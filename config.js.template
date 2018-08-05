@@ -1,8 +1,0 @@
-module.exports = {
-  clientId: <client id>,
-  clientSecret: <client secret>,
-  redirectUri: <redirect url>,
-  port: <port number>,
-  host: <host>,
-  jwtSecret: <jwt secret>,
-};
