@@ -106,4 +106,4 @@ app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
 app.get('/me', getUser);
-app.listen(3001, () => console.log('Enedis example app'));
+app.listen(process.env.PORT || 3001, () => console.log('Enedis example app'));
