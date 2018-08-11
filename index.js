@@ -62,7 +62,7 @@ const redirect = (req, res) => {
     })
     .then(data => {
       // log accessToken
-      console.log(data.access_token);
+      console.log(data);
       // create fake user
       const user = {
         name: 'toto',
