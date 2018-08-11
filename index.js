@@ -73,37 +73,10 @@ const redirect = (req, res) => {
         `enedis-third-party-app://auth_complete?user=${jwt.sign(user, process.env.JWT_SECRET)}`,
       );
     })
-    /*
-    .then(data => {
-      // get user
-      return axios.get('https://gw.hml.api.enedis.fr/v3/customers', {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${data.access_token}`,
-      });
-    })
-    .then(res => {
-      if (res.status === 200) return res.data;
-      throw new Error(res.status);
-    })
-    .then(data => console.log(data)) */
     .catch(err => console.log(err));
-};
-
-const getUser = (req, res) => {
-  const data = {
-    firstname: 'Toto',
-    lastname: 'Dupont Dupont',
-    contact_data: {
-      phone: '06 00 00 00 00',
-      email: 'toto@dupont.com',
-    },
-  };
-  res.send(data);
 };
 
 app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
-app.get('/me', getUser);
 app.listen(process.env.PORT || 3001, () => console.log('Enedis example app'));
