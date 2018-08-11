@@ -49,7 +49,7 @@ const redirect = (req, res) => {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Content-Length': Buffer.byteLength(postData),
-      Host: host,
+      Host: process.env.HOST,
       'Cache-Control': 'no-cache',
     },
   };
