@@ -6,6 +6,13 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
+import {
+  getConsumptionLoadCurve,
+  getConsumptionMaxPower,
+  getDailyConsumption,
+  getDailyProduction,
+} from './data';
+
 if (process.env !== 'PRODUCTION') dotenv.config();
 const app = express();
 
@@ -79,4 +86,10 @@ const redirect = (req, res) => {
 app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
+
+app.get('/metering/consumption_load_curve', getConsumptionLoadCurve);
+app.get('/metering/consumption_max_power', getConsumptionMaxPower);
+app.get('/metering/daily_consumption', getDailyConsumption);
+app.get('/metering/daily_production', getDailyProduction);
+
 app.listen(process.env.PORT || 3001, () => console.log('Enedis example app'));
