@@ -4,7 +4,6 @@
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "http-status": "^1.2.0",
-    "jsonwebtoken": "^8.3.0",
     "lru-cache": "^4.1.3"
   },
   "devDependencies": {
@@ -24,7 +23,7 @@
     "start": "nodemon index.js --exec babel-node --presets es2015,stage-2"
   },
   "engines": {
-    "node": "8.11.2"
+    "node": "^10.0.0"
   },
   "author": "Yiren Wang",
   "license": "ISC",
