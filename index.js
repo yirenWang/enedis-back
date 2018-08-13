@@ -75,9 +75,9 @@ const redirect = (req, res) => {
         id: 'tata',
         accessToken: data.access_token,
       };
-      res.redirect(
-        `enedis-third-party-app://auth_complete?user=${jwt.sign(user, process.env.JWT_SECRET)}`,
-      );
+      // res.redirect(
+      //   `enedis-third-party-app://auth_complete?user=${jwt.sign(user, process.env.JWT_SECRET)}`,
+      // );
     })
     .catch(err => console.log(err));
 };
