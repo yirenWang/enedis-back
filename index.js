@@ -3,7 +3,6 @@ import https from 'https';
 import httpStatus from 'http-status';
 import querystring from 'querystring';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 import {

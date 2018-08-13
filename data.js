@@ -23,13 +23,34 @@ export const getConsumptionLoadCurve = (req, res) => {
   axios
     .get(url, options)
     .then(r => {
-      console.log(r);
-      if (r.status === 200) return res.send(r.data);
+      if (r.status === 200) return r.data;
+    })
+    .then(data => {
+      const graphData = data.usage_point.map(({ meter_reading }) => {
+        const d = {};
+        const { start, end, reading_type } = meter_reading;
+        d.metadata = {
+          start,
+          end,
+          reading_type,
+        };
+
+        d.graph_data = meter_reading.interval_block.map(point => {
+          const timeStamp = new Date(start);
+          timeStamp.setSeconds(
+            timeStamp.getSeconds() + reading_type.interval_length * point.reading_number,
+          );
+          return { x: timeStamp, y: point.value };
+        });
+        return d;
+      });
+
+      res.send(graphData);
     })
     .catch(err => {
-      if (err.response.status === 403)
+      if (err.response && err.response.status === 403)
         return res.send({ message: 'Le client est inconnu ou non habilité' });
-      res.send({ status: err.response.status, message: err.response.statusText });
+      res.send(err);
     });
 };
 
