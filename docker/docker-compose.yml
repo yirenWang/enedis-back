@@ -1,0 +1,10 @@
+version: '3'
+services:
+  enedis-back:
+    image: node:alpine
+    build: .
+    volumes: 
+      - ..:/usr/app
+    command: yarn start
+    ports:
+      - 3001:3001
