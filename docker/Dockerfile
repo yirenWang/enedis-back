@@ -1,5 +1,10 @@
 FROM node:alpine
 
-WORKDIR /usr/app
+WORKDIR /usr/src/app
 
-RUN yarn install --quiet
+COPY package.json ./
+COPY yarn.lock ./
+
+RUN yarn install
+
+COPY . .

@@ -1,13 +1,12 @@
 version: '3'
 services:
   enedis-back:
-    build: .
-    volumes: 
-      - ..:/usr/app
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     command: yarn start
     ports:
-      - 3001:3001
-  enedis-db:
+      - 3001:3001  enedis-db:
     image: postgres:alpine
     environment:
     - DB_USER=admin
