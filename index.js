@@ -4,6 +4,9 @@ import httpStatus from 'http-status';
 import querystring from 'querystring';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import jwtMiddleWare from 'express-jwt';
+import LRU from 'lru-cache';
 
 import {
   getConsumptionLoadCurve,
@@ -13,7 +16,16 @@ import {
 } from './data';
 
 if (process.env !== 'PRODUCTION') dotenv.config();
+
+export const userCache = LRU(100); // set max size of cache to 100
+
 const app = express();
+
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send('invalid token...');
+  }
+});
 
 const login = (req, res) => {
   req.state = (Math.random() + 1).toString(36).substring(7);
@@ -69,15 +81,16 @@ const redirect = (req, res) => {
     .then(data => {
       // log accessToken
       console.log(data);
-      // create fake user
-      const user = {
-        name: 'toto',
-        id: 'tata',
-        accessToken: data.access_token,
-      };
-      // res.redirect(
-      //   `enedis-third-party-app://auth_complete?user=${jwt.sign(user, process.env.JWT_SECRET)}`,
-      // );
+      // create fake user with random id
+      // FIXME get from enedis asap
+      const id = Math.random()
+        .toString(36)
+        .slice(-6);
+      // Save to (or update) cache (for simplicity reasons,  a real app that will use a database can save to database here)
+      userCache.set(id, data.access_token);
+      res.redirect(
+        `enedis-third-party-app://auth_complete?user=${jwt.sign({ id }, process.env.JWT_SECRET)}`,
+      );
     })
     .catch(err => console.log(err));
 };
@@ -86,7 +99,11 @@ app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
 
-app.get('/metering/consumption_load_curve', getConsumptionLoadCurve);
+app.get(
+  '/metering/consumption_load_curve',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  getConsumptionLoadCurve,
+);
 app.get('/metering/consumption_max_power', getConsumptionMaxPower);
 app.get('/metering/daily_consumption', getDailyConsumption);
 app.get('/metering/daily_production', getDailyProduction);

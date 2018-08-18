@@ -1,7 +1,11 @@
 import axios from 'axios';
 import querystring from 'querystring';
-
+import { userCache } from './index';
 const jwtSecret = process.env.JWT_SECRET;
+
+const getUserAccessToken = id => {
+  const accessToken = userCache.get(id);
+};
 
 const formatGraphData = data => {
   const graphData = data.usage_point.map(({ meter_reading }) => {
@@ -40,7 +44,7 @@ export const getConsumptionLoadCurve = (req, res) => {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${process.env.ACCESS_TOKEN || req.user.accessToken}`,
+      Authorization: `Bearer ${process.env.ACCESS_TOKEN || getUserAccessToken(req.user.id)}`,
     },
   };
 
@@ -73,7 +77,7 @@ export const getConsumptionMaxPower = (req, res) => {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${process.env.ACCESS_TOKEN || req.user.accessToken}`,
+      Authorization: `Bearer ${process.env.ACCESS_TOKEN || getUserAccessToken(req.user.id)}`,
     },
   };
 
@@ -107,7 +111,7 @@ export const getDailyConsumption = (req, res) => {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${process.env.ACCESS_TOKEN || req.user.accessToken}`,
+      Authorization: `Bearer ${process.env.ACCESS_TOKEN || getUserAccessToken(req.user.id)}`,
     },
   };
 
@@ -141,7 +145,7 @@ export const getDailyProduction = (req, res) => {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${process.env.ACCESS_TOKEN || req.user.accessToken}`,
+      Authorization: `Bearer ${process.env.ACCESS_TOKEN || getUserAccessToken(req.user.id)}`,
     },
   };
 
