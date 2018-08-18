@@ -7,3 +7,9 @@ services:
     command: yarn start
     ports:
       - 3001:3001
+  enedis-db:
+    image: postgres:alpine
+    environment:
+    - DB_USER=admin
+    - DB_PASS=password
+    - DB_NAME=test
