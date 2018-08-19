@@ -107,8 +107,8 @@ const formatDataFromDB = data => {
   data.forEach(e => {
     tmp[e.usagePointId] = tmp[e.usagePointId] || [];
     tmp[e.usagePointId].push({
-      timestamp: d.timestamp,
-      value: d.value,
+      timestamp: e.timestamp,
+      value: e.value,
     });
   });
   // [{metadata: , data: [] }, ... ]
