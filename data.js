@@ -128,6 +128,7 @@ const formatDataFromDB = data => {
 export const getConsumptionLoadCurve = (req, res) => {
   // Is data in bdd
   getDataForUserByType(req.user.id, 'ConsumptionLoadCurve').then(data => {
+    console.log('data from data base', data);
     if (data.length === 0) {
       // Data is not in bdd
       getDataFromEnedis('consumption_load_curve', req, res);

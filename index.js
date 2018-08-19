@@ -121,8 +121,20 @@ app.get(
   jwtMiddleWare({ secret: process.env.JWT_SECRET }),
   getConsumptionLoadCurve,
 );
-app.get('/metering/consumption_max_power', getConsumptionMaxPower);
-app.get('/metering/daily_consumption', getDailyConsumption);
-app.get('/metering/daily_production', getDailyProduction);
+app.get(
+  '/metering/consumption_max_power',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  getConsumptionMaxPower,
+);
+app.get(
+  '/metering/daily_consumption',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  getDailyConsumption,
+);
+app.get(
+  '/metering/daily_production',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  getDailyProduction,
+);
 
 app.listen(process.env.PORT || 3001, () => console.log('Enedis example app'));
