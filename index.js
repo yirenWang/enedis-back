@@ -94,21 +94,20 @@ const redirect = (req, res) => {
         data.access_token,
         data.refresh_token,
         expiresAt,
-      );
-    })
-    .then(([user, created]) => {
-      updateUser(user, {
-        accessToken: data.access_token,
-        refreshToken: data.refresh_token,
-        expiresAt,
+      ).spread((user, created) => {
+        updateUser(user, {
+          accessToken: data.access_token,
+          refreshToken: data.refresh_token,
+          expiresAt,
+        });
+        console.log(jwt.sign({ id: user.id }, process.env.JWT_SECRET));
+        res.redirect(
+          `enedis-third-party-app://auth_complete?user=${jwt.sign(
+            { id: user.id },
+            process.env.JWT_SECRET,
+          )}`,
+        );
       });
-      console.log(jwt.sign({ id: user.id }, process.env.JWT_SECRET));
-      res.redirect(
-        `enedis-third-party-app://auth_complete?user=${jwt.sign(
-          { id: user.id },
-          process.env.JWT_SECRET,
-        )}`,
-      );
     })
     .catch(err => console.log(err));
 };
