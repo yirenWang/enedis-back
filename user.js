@@ -1,4 +1,4 @@
-const getUser = (req, res) => {
+const getUserFromEnedis = (req, res) => {
   const data = {
     firstname: 'Toto',
     lastname: 'Dupont Dupont',
