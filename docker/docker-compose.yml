@@ -1,9 +1,10 @@
 version: '3'
 services:
   enedis-back:
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
+    image: node:alpine
+    working_dir: /usr/src/app
+    volumes:
+      - ..:/usr/src/app
     command: yarn start
     ports:
       - 3001:3001
