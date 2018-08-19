@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import jwtMiddleWare from 'express-jwt';
 
-import { findOrCreateUser } from './db/user';
+import { findOrCreateUser, updateUser } from './db/user';
 
 import {
   getConsumptionLoadCurve,
@@ -81,21 +81,33 @@ const redirect = (req, res) => {
       // log accessToken
       console.log(data);
       // create fake user with random id
-      // FIXME get from enedis asap
+      // FIXME get from enedis asap (id, firstname, lastname)
       const id = 'fakeId';
       // find or create user
-
-      findOrCreateUser(
+      const expiresAt = new Date(
+        parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10),
+      );
+      return findOrCreateUser(
         'jeff',
         'montagne',
         id,
         data.access_token,
         data.refresh_token,
-        new Date(parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10)),
+        expiresAt,
       );
-      console.log(jwt.sign({ id }, process.env.JWT_SECRET));
+    })
+    .spread((user, created) => {
+      updateUser(user, {
+        accessToken: data.access_token,
+        refreshToken: data.refresh_token,
+        expiresAt,
+      });
+      console.log(jwt.sign({ id: user.id }, process.env.JWT_SECRET));
       res.redirect(
-        `enedis-third-party-app://auth_complete?user=${jwt.sign({ id }, process.env.JWT_SECRET)}`,
+        `enedis-third-party-app://auth_complete?user=${jwt.sign(
+          { id: user.id },
+          process.env.JWT_SECRET,
+        )}`,
       );
     })
     .catch(err => console.log(err));
