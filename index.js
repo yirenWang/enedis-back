@@ -96,7 +96,7 @@ const redirect = (req, res) => {
         expiresAt,
       );
     })
-    .spread((user, created) => {
+    .then(([user, created]) => {
       updateUser(user, {
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
