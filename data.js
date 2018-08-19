@@ -7,11 +7,15 @@ import _ from 'lodash';
 const jwtSecret = process.env.JWT_SECRET;
 
 const getUserAccessToken = id => {
+  console.log(id);
   return getUserByEnedisId(id).then(user => {
-    if (user.expiredAt < new Date()) {
-      // get new accessToken
+    if (user) {
+      if (user.expiredAt < new Date()) {
+        // get new accessToken
+      }
+      return user.accessToken;
     }
-    return user.accessToken;
+    throw new Error('User not found');
   });
 };
 
@@ -40,9 +44,9 @@ const formatDataFromEnedis = data => {
 };
 
 const createDateStrings = () => {
-  const end = new Date();
-  end.setDate(end.getDate() - 5);
-  return { start: new Date().toISOString(), end: end.toISOString() };
+  const start = new Date();
+  start.setDate(start.getDate() - 5);
+  return { end: new Date().toISOString(), start: start.toISOString() };
 };
 
 const getDataFromEnedis = (URLType, req, res) => {

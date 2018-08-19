@@ -24,14 +24,13 @@ export const Data = sequelize.define('data', {
 User.hasMany(Data);
 Data.belongsTo(User);
 
-sequelize.sync({ force: true });
-// .then(() =>
-//   User.create({
-//     id: 'fakeId',
-//     firstname: 'jeff',
-//     lastname: 'montagne',
-//     accessToken: '3Y5GXfmg4a8WZzceYMuePit7flZ7TyQ2V6n9jCDPCK6ZntxCAuZhkk',
-//     refreshToken: '4oHAV25sUCrE7xLu255ZlwmuU3xmosyG30SC7aituduYZ8',
-//     expiresAt: new Date(),
-//   }),
-// );
+sequelize.sync({ force: true }).then(() =>
+  User.create({
+    id: 'fakeId',
+    firstname: 'jeff',
+    lastname: 'montagne',
+    accessToken: 'zn78Tnv1eX8oF1QWaScizSRgi4p5BN0bzc1VNKe7Fag6UT8WDgf8H1',
+    refreshToken: '4oHAV25sUCrE7xLu255ZlwmuU3xmosyG30SC7aituduYZ8',
+    expiresAt: new Date('2018-09-09'),
+  }),
+);
