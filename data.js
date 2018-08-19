@@ -111,24 +111,22 @@ const formatDataFromDB = data => {
       value: d.value,
     });
   });
-  // [{usagePointId: , data: [] }, ... ]
+  // [{metadata: , data: [] }, ... ]
   const graph_data = Object.keys(tmp).map(id => ({
-    usagePointId: id,
-    data: tmp[id],
+    metadata: {
+      start: data[0].timestamp,
+      end: data[data.length - 1].timestamp,
+      unit: data[0].unit,
+      usagePointId: id,
+    },
+    graph_data: tmp[id],
   }));
-
-  const metadata = {
-    start: data[0].timestamp,
-    end: data[data.length - 1].timestamp,
-    unit: data[0].unit,
-  };
-  return { graph_data, metadata };
+  return graph_data;
 };
 
 export const getConsumptionLoadCurve = (req, res) => {
   // Is data in bdd
   getDataForUserByType(req.user.id, 'consumptionLoadCurve').then(data => {
-    console.log('data from data base', data);
     if (data.length === 0) {
       // Data is not in bdd
       getDataFromEnedis('consumption_load_curve', req, res);
