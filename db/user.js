@@ -1,6 +1,6 @@
 import { User } from './index';
 
-const getUserByEnedisId = enedisId => {
+export const getUserByEnedisId = enedisId => {
   return User.findById(enedisId);
 };
 
