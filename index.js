@@ -6,7 +6,8 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import jwtMiddleWare from 'express-jwt';
-import LRU from 'lru-cache';
+
+import { findOrCreateUser } from './db/user';
 
 import {
   getConsumptionLoadCurve,
@@ -16,8 +17,6 @@ import {
 } from './data';
 
 if (process.env !== 'PRODUCTION') dotenv.config();
-
-export const userCache = LRU(100); // set max size of cache to 100
 
 const app = express();
 
@@ -83,11 +82,18 @@ const redirect = (req, res) => {
       console.log(data);
       // create fake user with random id
       // FIXME get from enedis asap
-      const id = Math.random()
-        .toString(36)
-        .slice(-6);
-      // Save to (or update) cache (for simplicity reasons,  a real app that will use a database can save to database here)
-      userCache.set(id, data.access_token);
+      const id = 'fakeId';
+      // find or create user
+
+      findOrCreateUser(
+        'jeff',
+        'montagne',
+        id,
+        data.access_token,
+        data.refresh_token,
+        new Date(parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10)),
+      );
+      console.log(jwt.sign({ id }, process.env.JWT_SECRET));
       res.redirect(
         `enedis-third-party-app://auth_complete?user=${jwt.sign({ id }, process.env.JWT_SECRET)}`,
       );
