@@ -127,7 +127,7 @@ const formatDataFromDB = data => {
 
 export const getConsumptionLoadCurve = (req, res) => {
   // Is data in bdd
-  getDataForUserByType(req.user.id, 'ConsumptionLoadCurve').then(data => {
+  getDataForUserByType(req.user.id, 'consumptionLoadCurve').then(data => {
     console.log('data from data base', data);
     if (data.length === 0) {
       // Data is not in bdd
@@ -140,7 +140,7 @@ export const getConsumptionLoadCurve = (req, res) => {
 
 export const getConsumptionMaxPower = (req, res) => {
   // Is data in bdd
-  getDataForUserByType(req.user.id, 'ConsumptionMaxPower').then(data => {
+  getDataForUserByType(req.user.id, 'consumptionMaxPower').then(data => {
     if (data.length === 0) {
       // Data is not in bdd
       getDataFromEnedis('consumption_max_power', req, res);
@@ -152,7 +152,7 @@ export const getConsumptionMaxPower = (req, res) => {
 
 export const getDailyConsumption = (req, res) => {
   // Is data in bdd
-  getDataForUserByType(req.user.id, 'DailyConsumption').then(data => {
+  getDataForUserByType(req.user.id, 'dailyConsumption').then(data => {
     if (data.length === 0) {
       // Data is not in bdd
       getDataFromEnedis('daily_consumption', req, res);
@@ -164,7 +164,7 @@ export const getDailyConsumption = (req, res) => {
 
 export const getDailyProduction = (req, res) => {
   // Is data in bdd
-  getDataForUserByType(req.user.id, 'DailyProduction').then(data => {
+  getDataForUserByType(req.user.id, 'dailyProduction').then(data => {
     if (data.length === 0) {
       // Data is not in bdd
       getDataFromEnedis('daily_production', req, res);
