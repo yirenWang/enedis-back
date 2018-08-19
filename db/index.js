@@ -19,6 +19,7 @@ export const Data = sequelize.define('data', {
   timestamp: Sequelize.DATE,
   value: Sequelize.FLOAT,
   unit: Sequelize.STRING,
+  usagePointId: Sequelize.STRING,
 });
 
 User.hasMany(Data);
@@ -29,7 +30,7 @@ sequelize.sync({ force: true }).then(() =>
     id: 'fakeId',
     firstname: 'jeff',
     lastname: 'montagne',
-    accessToken: 'zn78Tnv1eX8oF1QWaScizSRgi4p5BN0bzc1VNKe7Fag6UT8WDgf8H1',
+    accessToken: 'Buvc2tKY25z6FjycyJagQoxxgDBPO7CTbFTOWf1rxoJiE5ZViB0avp',
     refreshToken: '4oHAV25sUCrE7xLu255ZlwmuU3xmosyG30SC7aituduYZ8',
     expiresAt: new Date('2018-09-09'),
   }),

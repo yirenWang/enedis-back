@@ -1,14 +1,15 @@
 import { Data, User } from './index';
 
-export const createDataForUser = (userId, graphData, unit, type) => {
-  const data = graphData.map(e => ({
+export const createDataForUser = (userId, data, unit, type, usagePointId) => {
+  const DBdata = data.map(e => ({
     unit,
-    timestamp,
-    value,
+    timestamp: e.timestamp,
+    value: e.value,
     userId,
     type,
+    usagePointId,
   }));
-  return Data.bulkCreate(data);
+  return Data.bulkCreate(DBdata);
 };
 
 export const deleteDataForUserByType = (userId, type) => {
@@ -16,5 +17,8 @@ export const deleteDataForUserByType = (userId, type) => {
 };
 
 export const getDataForUserByType = (userId, type) => {
-  return Data.findAll({ where: { userId, type } });
+  return Data.findAll({
+    where: { userId, type },
+    order: [['timestamp', 'DESC']],
+  });
 };
