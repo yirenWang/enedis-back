@@ -14,6 +14,7 @@ import {
   getConsumptionMaxPower,
   getDailyConsumption,
   getDailyProduction,
+  refreshData,
 } from './data';
 
 if (process.env !== 'PRODUCTION') dotenv.config();
@@ -135,6 +136,35 @@ app.get(
   '/metering/daily_production',
   jwtMiddleWare({ secret: process.env.JWT_SECRET }),
   getDailyProduction,
+);
+
+app.get(
+  '/metering/refresh/consumption_load_curve',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  (req, res) => {
+    refreshData(req, res, 'consumption_load_curve');
+  },
+);
+app.get(
+  '/metering/refresh/consumption_max_power',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  (req, res) => {
+    refreshData(req, res, 'consumption_max_power');
+  },
+);
+app.get(
+  '/metering/refresh/daily_consumption',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  (req, res) => {
+    refreshData(req, res, 'daily_consumption');
+  },
+);
+app.get(
+  '/metering/refresh/daily_production',
+  jwtMiddleWare({ secret: process.env.JWT_SECRET }),
+  (req, res) => {
+    refreshData(req, res, 'daily_production');
+  },
 );
 
 app.listen(process.env.PORT || 3001, () => console.log('Enedis example app'));

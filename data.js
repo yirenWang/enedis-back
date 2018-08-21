@@ -172,3 +172,8 @@ export const getDailyProduction = (req, res) => {
     }
   });
 };
+
+// datatype needs to be in snake_case
+export const refreshData = (req, res, dataType) => {
+  getDataFromEnedis(dataType, req, res);
+};
