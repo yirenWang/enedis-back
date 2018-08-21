@@ -13,6 +13,7 @@ const getUserAccessToken = id => {
       if (user.expiredAt < new Date()) {
         // get new accessToken
       }
+      console.log('user accessToken : ', user.accessToken);
       return user.accessToken;
     }
     throw new Error('User not found');
