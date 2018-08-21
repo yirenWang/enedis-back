@@ -50,7 +50,7 @@ const formatDataFromEnedis = data => {
 
 const createDateStrings = () => {
   const start = new Date();
-  start.setDate(start.getDate() - 5);
+  start.setDate(start.getDate() - 10);
   return { end: new Date().toISOString(), start: start.toISOString() };
 };
 
