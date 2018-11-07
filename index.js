@@ -55,8 +55,7 @@ const redirect = (req, res) => {
   //   res.send(httpStatus.FORBIDDEN);
   // }
 
-  console.log('STATE: =============>' + req.state);
-  console.log('CODE: ===============>' + req.query.code);
+  console.log('REQ ===========> ' + req.query);
   const postData = querystring.stringify({
     code: req.query.code,
     client_id: process.env.CLIENT_ID,
