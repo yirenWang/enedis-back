@@ -17,32 +17,35 @@ import {
   refreshData,
 } from './data';
 
+// Heroku gères les variables d'environement donc le '.env' est utilisé que pour le processus de développement
 if (process.env !== 'PRODUCTION') dotenv.config();
 
+// Create express application
 const app = express();
 
+// Catch errors
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     res.status(401).send('invalid token...');
   }
 });
 
+// When a user wishes to connect
 const login = (req, res) => {
   req.state = (Math.random() + 1).toString(36).substring(7);
+
+  // Add test client number (from 1 to 5) to the end of state (cf documentation)
+  req.state = req.state + '2';
+
+  // Redirect user to login page on enedis
   const redirectUrl =
-    'https://gw.prd.api.enedis.fr/v1/oauth2/authorize' +
+    'https://gw.hml.api.enedis.fr/group/espace-particuliers/consentement-linky/oauth2/authorize' +
     '?' +
-    'client_id=' +
-    process.env.CLIENT_ID +
+    `client_id=${process.env.CLIENT_ID}` +
+    `&state=${req.state}` +
+    `&duration=${process.env.DURATION}` + // duration est la durée du consentement que vous souhaitez obtenir : cette durée est à renseigner au format ISO 8601 (exemple : « P6M » pour une durée de 6 mois),
     '&response_type=code' +
-    '&' +
-    'redirect_uri=' +
-    process.env.REDIRECT_URI +
-    '&' +
-    'state=' +
-    req.state +
-    '&' +
-    'user_type=external';
+    `&redirect_uri=${process.env.REDIRECT_URI}`;
   console.log(redirectUrl);
   return res.redirect(redirectUrl);
 };
@@ -59,9 +62,10 @@ const redirect = (req, res) => {
     grant_type: 'authorization_code',
   });
 
-  const url = `https://gw.prd.api.enedis.fr/v1/oauth2/token?redirect_uri=${
+  const url = `https://gw.hml.api.enedis.fr/v1/oauth2/token?redirect_uri=${
     process.env.REDIRECT_URI
   }`;
+
   const options = {
     method: 'post',
     headers: {
@@ -167,4 +171,5 @@ app.get(
   },
 );
 
+// Listen to port specified by the .env or 3001
 app.listen(process.env.PORT || 3001, () => console.log('Enedis example app'));
