@@ -80,6 +80,7 @@ const getDataFromEnedis = (URLType, req, res) => {
       if (r.status === 200) return r.data;
     })
     .then(data => {
+      console.log('GRAPH DATA =======> ', data);
       const graphData = formatDataFromEnedis(data); // [ {metadata, graph_data}, ... ]
       // Save data to database
       graphData.forEach(d => {
