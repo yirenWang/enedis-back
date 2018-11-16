@@ -59,8 +59,8 @@ const getDataFromEnedis = (URLType, req, res) => {
     `https://gw.prd.api.enedis.fr/v3/metering_data/${URLType}` +
     '?' +
     `start=${createDateStrings().start}` +
-    '&' +
-    `end=${createDateStrings().end}`;
+    `&end=${createDateStrings().end}` +
+    `&usage_point_id=${req.user.usagePointId}`;
 
   getUserAccessToken(req.user.id)
     .then(accessToken => {

@@ -10,6 +10,7 @@ export const findOrCreateUser = (
   enedisId,
   accessToken,
   refreshToken,
+  usagePointId,
   expiresAt,
 ) => {
   return User.findOrCreate({
@@ -20,11 +21,12 @@ export const findOrCreateUser = (
       accessToken,
       refreshToken,
       expiresAt,
+      usagePointId,
     },
   });
 };
 
 export const updateUser = (user, newData) => {
-  const { firstname, lastname, accessToken } = newData;
-  return user.update({ accessToken, firstname, lastname });
+  const { firstname, lastname, accessToken, usagePointId } = newData;
+  return user.update({ accessToken, firstname, lastname, usagePointId });
 };

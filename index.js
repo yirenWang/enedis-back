@@ -91,16 +91,18 @@ const redirect = (req, res) => {
           client.customer_id,
           data.access_token,
           data.refresh_token,
+          usagePointId,
           expiresAt,
         ).spread((user, created) => {
           updateUser(user, {
             accessToken: data.access_token,
             refreshToken: data.refresh_token,
+            usagePointId,
             expiresAt,
           });
           res.redirect(
             `enedis-third-party-app://auth_complete?user=${jwt.sign(
-              { id: user.id },
+              { id: user.id, usagePointId: user.usagePointId },
               process.env.JWT_SECRET,
             )}`,
           );
