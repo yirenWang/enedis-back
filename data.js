@@ -34,10 +34,10 @@ const formatDataFromEnedis = data => {
       usagePointId: usage_point_id,
     };
 
-    d.graph_data = meter_reading.interval_block.map(point => {
+    d.graph_data = meter_reading.interval_reading.map(point => {
       const timestamp = new Date(start);
       timestamp.setSeconds(
-        timestamp.getSeconds() + reading_type.interval_length * (point.reading_number - 1),
+        timestamp.getSeconds() + reading_type.interval_length * (point.rank - 1),
       );
       return { timestamp, value: point.value };
     });
