@@ -56,7 +56,7 @@ const createDateStrings = () => {
 
 const getDataFromEnedis = (URLType, req, res) => {
   const url =
-    `https://gw.prd.api.enedis.fr/v3/metering_data/${URLType}` +
+    `https://gw.hml.api.enedis.fr/v3/metering_data/${URLType}` +
     '?' +
     `start=${createDateStrings().start}` +
     `&end=${createDateStrings().end}` +
