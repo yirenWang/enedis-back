@@ -1,11 +1,10 @@
-const getUserFromEnedis = (req, res) => {
-  const data = {
-    firstname: 'Toto',
-    lastname: 'Dupont Dupont',
-    contact_data: {
-      phone: '06 00 00 00 00',
-      email: 'toto@dupont.com',
+const getUserFromEnedis = accessToken => {
+  const url = 'https://gw.hml.enedis.fr/v3/customers/identity';
+  const options = {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${accessToken}`,
     },
   };
-  res.send(data);
+  return axios.get(url, options);
 };

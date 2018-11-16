@@ -17,6 +17,8 @@ import {
   refreshData,
 } from './data';
 
+import { getUserFromEnedis } from './user';
+
 // Heroku gères les variables d'environement donc le '.env' est utilisé que pour le processus de développement
 if (process.env !== 'PRODUCTION') dotenv.config();
 
@@ -54,8 +56,6 @@ const redirect = (req, res) => {
   // if (req.state !== req.query.state) {
   //   res.send(httpStatus.FORBIDDEN);
   // }
-
-  console.log('REQ ===========> ' + JSON.stringify(req.query));
   const postData = querystring.stringify({
     code: req.query.code,
     client_id: process.env.CLIENT_ID,
@@ -81,12 +81,14 @@ const redirect = (req, res) => {
       throw new Error(res.status);
     })
     .then(data => {
-      // log accessToken
+      // log data
       console.log(data);
-      // create fake user with random id
-      // FIXME get from enedis asap (id, firstname, lastname)
-      const id = 'fakeId';
-      // find or create user
+
+      // get user information from enedis asap (id, firstname, lastname)
+      getUserFromEnedis(data.access_token).then(data => {
+        console.log(data);
+      });
+
       const expiresAt = new Date(
         parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10),
       );
