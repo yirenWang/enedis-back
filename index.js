@@ -86,8 +86,8 @@ const redirect = (req, res) => {
       );
       getUserFromEnedis(data.access_token, usagePointId).then(client => {
         return findOrCreateUser(
-          client.identity.firstname,
-          client.identity.lastname,
+          client.identity.natural_person.firstname,
+          client.identity.natural_person.lastname,
           client.customer_id,
           data.access_token,
           data.refresh_token,
