@@ -74,7 +74,6 @@ const redirect = (req, res) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   };
-
   axios
     .post(url, postData, options)
     .then(res => {
@@ -82,38 +81,31 @@ const redirect = (req, res) => {
       throw new Error(res.status);
     })
     .then(data => {
-      // log data
-      console.log(data);
-
-      // get user information from enedis asap (id, firstname, lastname)
-      return getUserFromEnedis(data.access_token, usagePointId).then(res => {
-        console.log(res.data);
+      const expiresAt = new Date(
+        parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10),
+      );
+      getUserFromEnedis(data.access_token, usagePointId).then(client => {
+        return findOrCreateUser(
+          client.identity.firstname,
+          client.identity.lastname,
+          client.customer_id,
+          data.access_token,
+          data.refresh_token,
+          expiresAt,
+        ).spread((user, created) => {
+          updateUser(user, {
+            accessToken: data.access_token,
+            refreshToken: data.refresh_token,
+            expiresAt,
+          });
+          res.redirect(
+            `enedis-third-party-app://auth_complete?user=${jwt.sign(
+              { id: user.id },
+              process.env.JWT_SECRET,
+            )}`,
+          );
+        });
       });
-
-      // const expiresAt = new Date(
-      //   parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10),
-      // );
-      // return findOrCreateUser(
-      //   'jeff',
-      //   'montagne',
-      //   id,
-      //   data.access_token,
-      //   data.refresh_token,
-      //   expiresAt,
-      // ).spread((user, created) => {
-      //   updateUser(user, {
-      //     accessToken: data.access_token,
-      //     refreshToken: data.refresh_token,
-      //     expiresAt,
-      //   });
-      //   console.log(jwt.sign({ id: user.id }, process.env.JWT_SECRET));
-      //   res.redirect(
-      //     `enedis-third-party-app://auth_complete?user=${jwt.sign(
-      //       { id: user.id },
-      //       process.env.JWT_SECRET,
-      //     )}`,
-      //   );
-      // });
     })
     .catch(err => console.log(err));
 };
@@ -127,16 +119,19 @@ app.get(
   jwtMiddleWare({ secret: process.env.JWT_SECRET }),
   getConsumptionLoadCurve,
 );
+
 app.get(
   '/metering/consumption_max_power',
   jwtMiddleWare({ secret: process.env.JWT_SECRET }),
   getConsumptionMaxPower,
 );
+
 app.get(
   '/metering/daily_consumption',
   jwtMiddleWare({ secret: process.env.JWT_SECRET }),
   getDailyConsumption,
 );
+
 app.get(
   '/metering/daily_production',
   jwtMiddleWare({ secret: process.env.JWT_SECRET }),
