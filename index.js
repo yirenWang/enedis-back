@@ -56,6 +56,7 @@ const redirect = (req, res) => {
   // if (req.state !== req.query.state) {
   //   res.send(httpStatus.FORBIDDEN);
   // }
+  const usagePointId = req.query.usage_point_id;
   const postData = querystring.stringify({
     code: req.query.code,
     client_id: process.env.CLIENT_ID,
@@ -85,7 +86,7 @@ const redirect = (req, res) => {
       console.log(data);
 
       // get user information from enedis asap (id, firstname, lastname)
-      return getUserFromEnedis(data.access_token).then(data => {
+      return getUserFromEnedis(data.access_token, usagePointId).then(data => {
         console.log(data);
       });
 
