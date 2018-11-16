@@ -86,8 +86,8 @@ const redirect = (req, res) => {
       console.log(data);
 
       // get user information from enedis asap (id, firstname, lastname)
-      return getUserFromEnedis(data.access_token, usagePointId).then(data => {
-        console.log(data);
+      return getUserFromEnedis(data.access_token, usagePointId).then(res => {
+        console.log(res.data);
       });
 
       // const expiresAt = new Date(
