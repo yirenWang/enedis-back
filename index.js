@@ -85,34 +85,34 @@ const redirect = (req, res) => {
       console.log(data);
 
       // get user information from enedis asap (id, firstname, lastname)
-      getUserFromEnedis(data.access_token).then(data => {
+      return getUserFromEnedis(data.access_token).then(data => {
         console.log(data);
       });
 
-      const expiresAt = new Date(
-        parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10),
-      );
-      return findOrCreateUser(
-        'jeff',
-        'montagne',
-        id,
-        data.access_token,
-        data.refresh_token,
-        expiresAt,
-      ).spread((user, created) => {
-        updateUser(user, {
-          accessToken: data.access_token,
-          refreshToken: data.refresh_token,
-          expiresAt,
-        });
-        console.log(jwt.sign({ id: user.id }, process.env.JWT_SECRET));
-        res.redirect(
-          `enedis-third-party-app://auth_complete?user=${jwt.sign(
-            { id: user.id },
-            process.env.JWT_SECRET,
-          )}`,
-        );
-      });
+      // const expiresAt = new Date(
+      //   parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10),
+      // );
+      // return findOrCreateUser(
+      //   'jeff',
+      //   'montagne',
+      //   id,
+      //   data.access_token,
+      //   data.refresh_token,
+      //   expiresAt,
+      // ).spread((user, created) => {
+      //   updateUser(user, {
+      //     accessToken: data.access_token,
+      //     refreshToken: data.refresh_token,
+      //     expiresAt,
+      //   });
+      //   console.log(jwt.sign({ id: user.id }, process.env.JWT_SECRET));
+      //   res.redirect(
+      //     `enedis-third-party-app://auth_complete?user=${jwt.sign(
+      //       { id: user.id },
+      //       process.env.JWT_SECRET,
+      //     )}`,
+      //   );
+      // });
     })
     .catch(err => console.log(err));
 };
