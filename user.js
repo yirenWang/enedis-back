@@ -9,6 +9,5 @@ export const getUserFromEnedis = (accessToken, usagePointId) => {
     },
   };
   // data is in the form of [{"customer": { "customer_id": "3000000", "identity": {"natural_person": {title, firstname, lastname} } } } ]
-  return axios.get(url, options)
-  .then(res => res.data[0]);
+  return axios.get(url, options).then(res => res.data[0].customer);
 };
