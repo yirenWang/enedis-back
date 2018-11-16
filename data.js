@@ -62,6 +62,7 @@ const getDataFromEnedis = (URLType, req, res) => {
     `&end=${createDateStrings().end}` +
     `&usage_point_id=${req.user.usagePointId}`;
 
+  console.log(url);
   getUserAccessToken(req.user.id)
     .then(accessToken => {
       const options = {
