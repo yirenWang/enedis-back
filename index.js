@@ -36,11 +36,11 @@ app.use((err, req, res, next) => {
 const login = (req, res) => {
   req.state = (Math.random() + 1).toString(36).substring(7);
 
-  // Add test client number (from 1 to 5) to the end of state (cf documentation)
+  // Add test client number (from 0 to 4) to the end of state (cf documentation)
   if (req.query.testClientId) {
     req.state = req.state + req.query.testClientId;
   } else {
-    req.state = req.state + '1';
+    req.state = req.state + '0';
   }
 
   // Redirect user to login page on enedis
