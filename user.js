@@ -126,9 +126,10 @@ export const getMyData = (req, res) => {
   return getUserAccessToken(user.id)
     .then(accessToken => {
       const contactData = getUserContactDataFromEnedis(accessToken, user.usagePointId);
+      const identity = getUserFromEnedis(accessToken, user.usagePointId);
       // const contracts = getUserContractsFromEnedis(accessToken, user.usagePointId);
       // const addresses = getUserAddressesFromEnedis(accessToken, user.usagePointId);
-      return Promise.all([contactData]);
+      return Promise.all([contactData, identity]);
     })
     .catch(err => console.log(err));
 };
