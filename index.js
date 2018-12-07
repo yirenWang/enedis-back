@@ -17,7 +17,7 @@ import {
   refreshData,
 } from './data';
 
-import { getUserFromEnedis } from './user';
+import { getUserFromEnedis, getMyData } from './user';
 
 // Heroku gères les variables d'environement donc le '.env' est utilisé que pour le processus de développement
 if (process.env !== 'PRODUCTION') dotenv.config();
@@ -119,6 +119,7 @@ const redirect = (req, res) => {
 app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
+app.get('/me', getMyData);
 
 app.get(
   '/metering/consumption_load_curve',

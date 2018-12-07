@@ -1,24 +1,10 @@
 import axios from 'axios';
 import querystring from 'querystring';
-import { getUserByEnedisId } from './db/user';
+import { getUserByEnedisId, getUserAccessToken } from './db/user';
 import { getDataForUserByType, createDataForUser } from './db/data';
 import _ from 'lodash';
 
 const jwtSecret = process.env.JWT_SECRET;
-
-const getUserAccessToken = id => {
-  console.log(id);
-  return getUserByEnedisId(id).then(user => {
-    if (user) {
-      if (user.expiredAt < new Date()) {
-        // get new accessToken
-      }
-      console.log('user accessToken : ', user.accessToken);
-      return user.accessToken;
-    }
-    throw new Error('User not found');
-  });
-};
 
 // gives
 // [ {metadata, graph_data}, ... ]
