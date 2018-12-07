@@ -119,7 +119,7 @@ const redirect = (req, res) => {
 app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
-app.get('/me', getMyData);
+app.get('/me', jwtMiddleWare({ secret: process.env.JWT_SECRET }), getMyData);
 
 app.get(
   '/metering/consumption_load_curve',
