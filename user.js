@@ -131,5 +131,8 @@ export const getMyData = (req, res) => {
       // const addresses = getUserAddressesFromEnedis(accessToken, user.usagePointId);
       return Promise.all([contactData, identity]);
     })
+    .then(data => {
+      console.log(data);
+    })
     .catch(err => console.log(err));
 };
