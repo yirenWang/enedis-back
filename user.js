@@ -132,7 +132,18 @@ export const getMyData = (req, res) => {
       return Promise.all([contactData, identity]);
     })
     .then(data => {
-      console.log(data);
+      if (data.length > 1) {
+        // TODO verify data structure
+        const customer = {
+          firstname: data[1].identity.natural_person.firstname,
+          lastname: data[1].identity.natural_person.lastname,
+          phone: data[0].contact_data.phone,
+          email: data[0].contact_data.email,
+        };
+        res.send(customer);
+      } else {
+        throw new Error('No data');
+      }
     })
     .catch(err => console.log(err));
 };
