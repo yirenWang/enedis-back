@@ -123,10 +123,12 @@ export const getUserAddressesFromEnedis = (accessToken, usagePointId) => {
 
 export const getMyData = (req, res) => {
   const user = req.user; // {id, usagePointId }
-  return getUserAccessToken(user.id).then(accessToken => {
-    const contactData = getUserContactDataFromEnedis(accessToken, user.usagePointId);
-    const contracts = getUserContractsFromEnedis(accessToken, user.usagePointId);
-    const addresses = getUserAddressesFromEnedis(accessToken, user.usagePointId);
-    return Promise.all([contactData, contracts, addresses]);
-  });
+  return getUserAccessToken(user.id)
+    .then(accessToken => {
+      const contactData = getUserContactDataFromEnedis(accessToken, user.usagePointId);
+      const contracts = getUserContractsFromEnedis(accessToken, user.usagePointId);
+      const addresses = getUserAddressesFromEnedis(accessToken, user.usagePointId);
+      return Promise.all([contactData, contracts, addresses]);
+    })
+    .catch(err => console.log(err));
 };
