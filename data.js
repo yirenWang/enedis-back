@@ -1,7 +1,8 @@
 import axios from 'axios';
 import querystring from 'querystring';
-import { getUserByEnedisId, getUserAccessToken } from './db/user';
+import { getUserByEnedisId } from './db/user';
 import { getDataForUserByType, createDataForUser } from './db/data';
+import { getUserAccessToken } from './user';
 import _ from 'lodash';
 
 const jwtSecret = process.env.JWT_SECRET;
