@@ -121,6 +121,11 @@ export const getUserAddressesFromEnedis = (accessToken, usagePointId) => {
   return axios.get(url, options).then(res => res.data[0].customer);
 };
 
+const formatAddress = address => {
+  const { street, postal_code, city, country } = address;
+  return `${street} \n ${city} ${postal_code} \n ${country}`;
+};
+
 export const getMyData = (req, res) => {
   const user = req.user; // {id, usagePointId }
   return getUserAccessToken(user.id)
@@ -139,8 +144,8 @@ export const getMyData = (req, res) => {
           lastname: data[1].identity.natural_person.lastname,
           phone: data[0].contact_data.phone,
           email: data[0].contact_data.email,
-          contract: data[2]
-          addresses: data[3]
+          contracts: data[2].usage_points,
+          addresses: data[3].usage_points.map(up => formatAddress(up.usage_point_address)),
         };
         res.send(customer);
       } else {
