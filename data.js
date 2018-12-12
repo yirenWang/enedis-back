@@ -67,7 +67,6 @@ const getDataFromEnedis = (URLType, req, res) => {
       if (r.status === 200) return r.data;
     })
     .then(data => {
-      console.log('GRAPH DATA =======> ', JSON.stringify(data));
       const graphData = formatDataFromEnedis(data); // [ {metadata, graph_data}, ... ]
       // Save data to database
       graphData.forEach(d => {
@@ -85,7 +84,7 @@ const getDataFromEnedis = (URLType, req, res) => {
       if (err.response && err.response.status === 403)
         return res.send({ message: 'Le client est inconnu ou non habilité' });
       console.log(err);
-      res.send(err);
+      res.send(JSON.stringify(err));
     });
 };
 

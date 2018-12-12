@@ -122,7 +122,6 @@ export const getUserAddressesFromEnedis = (accessToken, usagePointId) => {
 };
 
 const formatAddress = address => {
-  console.log(address);
   const { street, postal_code, city, country } = address;
   return `${street} \n ${city} ${postal_code} \n ${country}`;
 };
@@ -138,8 +137,8 @@ export const getMyData = (req, res) => {
       return Promise.all([contactData, identity, contracts, addresses]);
     })
     .then(data => {
-      if (data.length > 1) {
-        console.log(data);
+      if (data.length == 4) {
+        console.log(JSON.stringify(data));
         // TODO verify data structure
         const customer = {
           firstname: data[1].identity.natural_person.firstname,
@@ -153,7 +152,7 @@ export const getMyData = (req, res) => {
         };
         res.send(customer);
       } else {
-        throw new Error('No data');
+        throw new Error('Incorrect data received');
       }
     })
     .catch(err => console.log(err));
