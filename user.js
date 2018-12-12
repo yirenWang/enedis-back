@@ -138,6 +138,7 @@ export const getMyData = (req, res) => {
     })
     .then(data => {
       if (data.length > 1) {
+        console.log(data);
         // TODO verify data structure
         const customer = {
           firstname: data[1].identity.natural_person.firstname,
