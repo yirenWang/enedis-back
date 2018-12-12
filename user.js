@@ -48,7 +48,7 @@ export const getUserContactDataFromEnedis = (accessToken, usagePointId) => {
 };
 
 export const getUserContractsFromEnedis = (accessToken, usagePointId) => {
-  const url = `https://gw.hml.api.enedis.fr/v3/customers/contracts?usage_point_id=${usagePointId}`;
+  const url = `https://gw.hml.api.enedis.fr/v3/customers/usage_points/contracts?usage_point_id=${usagePointId}`;
   const options = {
     headers: {
       Accept: 'application/json',
@@ -84,7 +84,7 @@ export const getUserContractsFromEnedis = (accessToken, usagePointId) => {
 };
 
 export const getUserAddressesFromEnedis = (accessToken, usagePointId) => {
-  const url = `https://gw.hml.api.enedis.fr/v3/customers/addresses?usage_point_id=${usagePointId}`;
+  const url = `https://gw.hml.api.enedis.fr/v3/customers/usage_points/addresses?usage_point_id=${usagePointId}`;
   const options = {
     headers: {
       Accept: 'application/json',
@@ -127,8 +127,8 @@ export const getMyData = (req, res) => {
     .then(accessToken => {
       const contactData = getUserContactDataFromEnedis(accessToken, user.usagePointId);
       const identity = getUserFromEnedis(accessToken, user.usagePointId);
-      // const contracts = getUserContractsFromEnedis(accessToken, user.usagePointId);
-      // const addresses = getUserAddressesFromEnedis(accessToken, user.usagePointId);
+      const contracts = getUserContractsFromEnedis(accessToken, user.usagePointId);
+      const addresses = getUserAddressesFromEnedis(accessToken, user.usagePointId);
       return Promise.all([contactData, identity]);
     })
     .then(data => {
@@ -139,6 +139,8 @@ export const getMyData = (req, res) => {
           lastname: data[1].identity.natural_person.lastname,
           phone: data[0].contact_data.phone,
           email: data[0].contact_data.email,
+          contract: data[2]
+          addresses: data[3]
         };
         res.send(customer);
       } else {
