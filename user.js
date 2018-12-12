@@ -122,6 +122,7 @@ export const getUserAddressesFromEnedis = (accessToken, usagePointId) => {
 };
 
 const formatAddress = address => {
+  console.log(address);
   const { street, postal_code, city, country } = address;
   return `${street} \n ${city} ${postal_code} \n ${country}`;
 };
