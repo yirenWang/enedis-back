@@ -134,7 +134,7 @@ export const getMyData = (req, res) => {
       const identity = getUserFromEnedis(accessToken, user.usagePointId);
       const contracts = getUserContractsFromEnedis(accessToken, user.usagePointId);
       const addresses = getUserAddressesFromEnedis(accessToken, user.usagePointId);
-      return Promise.all([contactData, identity, contacts, addresses]);
+      return Promise.all([contactData, identity, contracts, addresses]);
     })
     .then(data => {
       if (data.length > 1) {
