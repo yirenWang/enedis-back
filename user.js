@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { getUserByEnedisId } from './db/user';
-
+import { getUserByEnedisId, findOrCreateUser } from './db/user';
+import { deleteDataForUser } from './db/data';
 export const getUserAccessToken = id => {
   console.log(id);
   return getUserByEnedisId(id).then(user => {
@@ -156,4 +156,9 @@ export const getMyData = (req, res) => {
       }
     })
     .catch(err => console.log(err));
+};
+
+export const deleteMyData = (req, res) => {
+  const userId = req.user.id;
+  deleteDataForUser;
 };

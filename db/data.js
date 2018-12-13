@@ -12,8 +12,8 @@ export const createDataForUser = (userId, data, unit, type, usagePointId) => {
   return Data.bulkCreate(DBdata);
 };
 
-export const deleteDataForUserByType = (userId, type) => {
-  return Data.destroy({ where: { type, userId } });
+export const deleteDataForUser = userId => {
+  return Data.destroy({ where: { userId } });
 };
 
 export const getDataForUserByType = (userId, type) => {

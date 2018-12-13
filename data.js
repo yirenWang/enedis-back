@@ -84,7 +84,7 @@ const getDataFromEnedis = (URLType, req, res) => {
       if (err.response && err.response.status === 403)
         return res.send({ message: 'Le client est inconnu ou non habilité' });
       console.log(err);
-      res.send(JSON.stringify(err));
+      res.send("Un erreur s'est produit");
     });
 };
 
