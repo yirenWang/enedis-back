@@ -120,7 +120,7 @@ app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
 app.get('/me', jwtMiddleWare({ secret: process.env.JWT_SECRET }), getMyData);
-app.delete('/me', jwtMiddleWare({ secret: process.env.JWT_SECRET }), deleteMyData);
+app.get('/deleteme', jwtMiddleWare({ secret: process.env.JWT_SECRET }), deleteMyData);
 app.get(
   '/metering/consumption_load_curve',
   jwtMiddleWare({ secret: process.env.JWT_SECRET }),
