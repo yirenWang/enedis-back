@@ -7,6 +7,7 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import jwtMiddleWare from 'express-jwt';
+import memorystore from 'memorystore';
 
 import { findOrCreateUser, updateUser } from './db/user';
 
@@ -41,6 +42,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true },
+    store: new memorystore(session)({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    }),
   }),
 );
 
