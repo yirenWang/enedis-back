@@ -1,4 +1,5 @@
 import express from 'express';
+import session from 'express-session';
 import https from 'https';
 import httpStatus from 'http-status';
 import querystring from 'querystring';
@@ -32,6 +33,16 @@ app.use((err, req, res, next) => {
     res.status(401).send('invalid token...');
   }
 });
+
+// create seesion & uses the session to store state
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  }),
+);
 
 // When a user wishes to connect
 const login = (req, res) => {
