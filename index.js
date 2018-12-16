@@ -35,6 +35,8 @@ app.use((err, req, res, next) => {
   }
 });
 
+// create memorystore
+const Memorystore = memorystore(session);
 // create seesion & uses the session to store state
 app.use(
   session({
@@ -42,7 +44,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true },
-    store: new memorystore(session)({
+    store: new Memorystore({
       checkPeriod: 86400000, // prune expired entries every 24h
     }),
   }),
