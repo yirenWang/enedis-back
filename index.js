@@ -15,6 +15,7 @@ import {
   getDailyConsumption,
   getDailyProduction,
   refreshData,
+  deleteMyData,
 } from './data';
 
 import { getUserFromEnedis, getMyData } from './user';

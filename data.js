@@ -1,7 +1,8 @@
 import axios from 'axios';
+import httpStatus from 'http-status';
 import querystring from 'querystring';
 import { getUserByEnedisId } from './db/user';
-import { getDataForUserByType, createDataForUser } from './db/data';
+import { getDataForUserByType, createDataForUser, deleteDataForUser } from './db/data';
 import { getUserAccessToken } from './user';
 import _ from 'lodash';
 
@@ -164,4 +165,14 @@ export const getDailyProduction = (req, res) => {
 // datatype needs to be in snake_case
 export const refreshData = (req, res, dataType) => {
   getDataFromEnedis(dataType, req, res);
+};
+
+export const deleteMyData = (req, res) => {
+  return deleteDataForUser(req.user.id)
+    .then(affectedRows => {
+      if (affectedRows > 0) return res.send('ok');
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
