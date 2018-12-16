@@ -35,10 +35,16 @@ app.use((err, req, res, next) => {
 
 // When a user wishes to connect
 const login = (req, res) => {
-  // verify that the state exists, else send an error
-  if (!req.query.state) return res.send(httpStatus.NOT_ACCEPTABLE);
+  req.session.state = (Math.random() + 1).toString(36).substring(7);
 
-  req.session.state = req.query.state;
+  // Add test client number (from 0 to 4) to the end of state (cf documentation)
+  if (req.query.testClientId) {
+    req.session.state = req.state + req.query.testClientId;
+  } else {
+    // if no specific client is specified, default to client 0
+    req.session.state = req.state + '0';
+  }
+
   // Redirect user to login page on enedis
   const redirectUrl =
     'https://gw.hml.api.enedis.fr/group/espace-particuliers/consentement-linky/oauth2/authorize' +
