@@ -50,10 +50,10 @@ const login = (req, res) => {
 
   // Add test client number (from 0 to 4) to the end of state (cf documentation)
   if (req.query.testClientId) {
-    req.session.state = req.state + req.query.testClientId;
+    req.session.state = req.session.state + req.query.testClientId;
   } else {
     // if no specific client is specified, default to client 0
-    req.session.state = req.state + '0';
+    req.session.state = req.session.state + '0';
   }
 
   console.log(req.session);
