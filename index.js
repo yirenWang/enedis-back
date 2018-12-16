@@ -34,15 +34,10 @@ app.use((err, req, res, next) => {
 
 // When a user wishes to connect
 const login = (req, res) => {
-  req.state = (Math.random() + 1).toString(36).substring(7);
+  // verify that the state exists, else send an error
+  if (!req.query.state) return res.send(httpStatus.NOT_ACCEPTABLE);
 
-  // Add test client number (from 0 to 4) to the end of state (cf documentation)
-  if (req.query.testClientId) {
-    req.state = req.state + req.query.testClientId;
-  } else {
-    req.state = req.state + '0';
-  }
-
+  req.session.state = req.query.state;
   // Redirect user to login page on enedis
   const redirectUrl =
     'https://gw.hml.api.enedis.fr/group/espace-particuliers/consentement-linky/oauth2/authorize' +
@@ -52,14 +47,17 @@ const login = (req, res) => {
     `&duration=${process.env.DURATION}` + // duration est la durée du consentement que vous souhaitez obtenir : cette durée est à renseigner au format ISO 8601 (exemple : « P6M » pour une durée de 6 mois),
     '&response_type=code' +
     `&redirect_uri=${process.env.REDIRECT_URI}`;
-  console.log(redirectUrl);
+  console.log('Redirect URL : ' + redirectUrl);
   return res.redirect(redirectUrl);
 };
 
+// This function catches the redirection of enedis after login
 const redirect = (req, res) => {
-  // if (req.state !== req.query.state) {
-  //   res.send(httpStatus.FORBIDDEN);
-  // }
+  // verify that the state is correct
+  if (req.session.sstate !== req.query.state) {
+    res.send(httpStatus.FORBIDDEN);
+  }
+
   const usagePointId = req.query.usage_point_id;
   const postData = querystring.stringify({
     code: req.query.code,
