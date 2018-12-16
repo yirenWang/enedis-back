@@ -40,6 +40,11 @@ const Memorystore = memorystore(session);
 // create seesion & uses the session to store state
 app.use(
   session({
+    genid: req => {
+      console.log('Inside session middleware');
+      console.log(req.sessionID);
+      return (Math.random() + 1).toString(36).substring(7);
+    },
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
