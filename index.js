@@ -55,6 +55,7 @@ const login = (req, res) => {
     // if no specific client is specified, default to client 0
     req.session.state = req.session.state + '0';
   }
+  req.session.save();
 
   console.log(req.session);
   // Redirect user to login page on enedis
