@@ -63,7 +63,7 @@ const login = (req, res) => {
   }
   req.session.save();
 
-  console.log(req.session);
+  console.log(req.sessionID);
   // Redirect user to login page on enedis
   const redirectUrl =
     'https://gw.hml.api.enedis.fr/group/espace-particuliers/consentement-linky/oauth2/authorize' +
@@ -80,7 +80,7 @@ const login = (req, res) => {
 // This function catches the redirection of enedis after login
 const redirect = (req, res) => {
   // verify that the state is correct
-  console.log(req.session);
+  console.log(req.sessionID);
   if (req.session.state !== req.query.state) {
     return res.sendStatus(httpStatus.FORBIDDEN);
   }
