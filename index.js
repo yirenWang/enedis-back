@@ -56,6 +56,7 @@ const login = (req, res) => {
     req.session.state = req.state + '0';
   }
 
+  console.log(req.session);
   // Redirect user to login page on enedis
   const redirectUrl =
     'https://gw.hml.api.enedis.fr/group/espace-particuliers/consentement-linky/oauth2/authorize' +
