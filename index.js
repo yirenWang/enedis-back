@@ -47,7 +47,7 @@ app.use(
     },
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { maxAge: 3600000, secure: true },
     store: new Memorystore({
       checkPeriod: 86400000, // prune expired entries every 24h
