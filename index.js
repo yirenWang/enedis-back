@@ -69,7 +69,7 @@ const login = (req, res) => {
     'https://gw.hml.api.enedis.fr/group/espace-particuliers/consentement-linky/oauth2/authorize' +
     '?' +
     `client_id=${process.env.CLIENT_ID}` +
-    `&state=${req.state}` +
+    `&state=${req.session.state}` +
     `&duration=${process.env.DURATION}` + // duration est la durée du consentement que vous souhaitez obtenir : cette durée est à renseigner au format ISO 8601 (exemple : « P6M » pour une durée de 6 mois),
     '&response_type=code' +
     `&redirect_uri=${process.env.REDIRECT_URI}`;
