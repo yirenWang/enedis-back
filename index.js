@@ -72,8 +72,9 @@ const login = (req, res) => {
 // This function catches the redirection of enedis after login
 const redirect = (req, res) => {
   // verify that the state is correct
+  console.log(req.session);
   if (req.session.state !== req.query.state) {
-    return res.send(httpStatus.FORBIDDEN);
+    return res.sendStatus(httpStatus.FORBIDDEN);
   }
 
   const usagePointId = req.query.usage_point_id;
