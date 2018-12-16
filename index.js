@@ -72,8 +72,8 @@ const login = (req, res) => {
 // This function catches the redirection of enedis after login
 const redirect = (req, res) => {
   // verify that the state is correct
-  if (req.session.sstate !== req.query.state) {
-    res.send(httpStatus.FORBIDDEN);
+  if (req.session.state !== req.query.state) {
+    return res.send(httpStatus.FORBIDDEN);
   }
 
   const usagePointId = req.query.usage_point_id;
@@ -96,9 +96,9 @@ const redirect = (req, res) => {
   };
   axios
     .post(url, postData, options)
-    .then(res => {
-      if (res.status === 200) return res.data;
-      throw new Error(res.status);
+    .then(r => {
+      if (r.status === 200) return r.data;
+      throw new Error(r.status);
     })
     .then(data => {
       const expiresAt = new Date(
@@ -120,7 +120,7 @@ const redirect = (req, res) => {
             usagePointId,
             expiresAt,
           });
-          res.redirect(
+          return res.redirect(
             `enedis-third-party-app://auth_complete?user=${jwt.sign(
               { id: user.id, usagePointId: user.usagePointId },
               process.env.JWT_SECRET,
