@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import jwtMiddleWare from 'express-jwt';
 import memorystore from 'memorystore';
+import cors from 'cors';
 
 import { findOrCreateUser, updateUser } from './db/user';
 
@@ -27,6 +28,9 @@ if (process.env !== 'PRODUCTION') dotenv.config();
 
 // Create express application
 const app = express();
+
+// CORS
+app.use(cors());
 
 // Catch errors
 app.use((err, req, res, next) => {
