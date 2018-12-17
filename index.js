@@ -32,13 +32,6 @@ const app = express();
 // CORS
 app.use(cors());
 
-// Catch errors
-app.use((err, req, res, next) => {
-  if (err.name === 'UnauthorizedError') {
-    res.status(401).send('invalid token...');
-  }
-});
-
 // create memorystore
 const Memorystore = memorystore(session);
 // create seesion & uses the session to store state
@@ -50,14 +43,18 @@ app.use(
       return (Math.random() + 1).toString(36).substring(7);
     },
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 3600000, secure: true },
     store: new Memorystore({
       checkPeriod: 86400000, // prune expired entries every 24h
     }),
   }),
 );
+
+// Catch errors
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send('invalid token...');
+  }
+});
 
 // When a user wishes to connect
 const login = (req, res) => {
