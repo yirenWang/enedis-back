@@ -86,7 +86,6 @@ const login = (req, res) => {
 // This function catches the redirection of enedis after login
 const redirect = (req, res) => {
   // verify that the state is correct
-  console.log(req.sessionID);
   if (req.session.state !== req.query.state) {
     return res.sendStatus(httpStatus.FORBIDDEN);
   }
@@ -119,6 +118,8 @@ const redirect = (req, res) => {
       const expiresAt = new Date(
         parseInt(data.expires_in, 10) * 1000 + parseInt(data.issued_at, 10),
       );
+
+      // get user information from enedis to create user
       getUserFromEnedis(data.access_token, usagePointId).then(client => {
         return findOrCreateUser(
           client.identity.natural_person.firstname,
@@ -135,6 +136,7 @@ const redirect = (req, res) => {
             usagePointId,
             expiresAt,
           });
+          // redirect for the phone to catch this route
           return res.redirect(
             `enedis-third-party-app://auth_complete?user=${jwt.sign(
               { id: user.id, usagePointId: user.usagePointId },
@@ -147,6 +149,7 @@ const redirect = (req, res) => {
     .catch(err => console.log(err));
 };
 
+// Routes
 app.get('/', (req, res) => res.send('Welcome to the Enedis example app!'));
 app.get('/login', login);
 app.get('/redirect', redirect);
