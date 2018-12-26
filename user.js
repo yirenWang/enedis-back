@@ -147,7 +147,7 @@ export const getMyData = (req, res) => {
           email: data[0].contact_data.email,
           contracts: data[2].usage_points,
           addresses: data[3].usage_points.map(up =>
-            formatAddress(up.usage_point.usage_point_address),
+            formatAddress(up.usage_point.usage_point_addresses),
           ),
         };
         res.send(customer);
