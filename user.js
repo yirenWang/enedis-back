@@ -138,7 +138,6 @@ export const getMyData = (req, res) => {
     })
     .then(data => {
       if (data.length == 4) {
-        console.log(JSON.stringify(data));
         // TODO verify data structure
         const customer = {
           firstname: data[1].identity.natural_person.firstname,
@@ -150,6 +149,7 @@ export const getMyData = (req, res) => {
             formatAddress(up.usage_point.usage_point_addresses),
           ),
         };
+        console.log(customer);
         res.send(customer);
       } else {
         throw new Error('Incorrect data received');
