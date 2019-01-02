@@ -10,6 +10,12 @@ const jwtSecret = process.env.JWT_SECRET;
 
 // gives
 // [ {metadata, graph_data}, ... ]
+
+/**
+ * format elecricity data from enedis to store in database
+ *
+ * @param {object} data
+ */
 const formatDataFromEnedis = data => {
   const graphData = data.usage_point.map(({ meter_reading }) => {
     const { start, end, reading_type, usage_point_id } = meter_reading;
@@ -36,12 +42,21 @@ const formatDataFromEnedis = data => {
   return graphData;
 };
 
+/**
+ * create strings from date that are 10 days apart
+ */
 const createDateStrings = () => {
   const start = new Date();
   start.setDate(start.getDate() - 10);
   return { end: new Date().toISOString(), start: start.toISOString() };
 };
 
+/**
+ *
+ * @param {string} URLType can be consumption_load_curve, consumption_max_power, daily_consumption, daily_production
+ * @param {obj} req
+ * @param {obj} res
+ */
 const getDataFromEnedis = (URLType, req, res) => {
   const url =
     `https://gw.hml.api.enedis.fr/v3/metering_data/${URLType}` +
@@ -89,8 +104,11 @@ const getDataFromEnedis = (URLType, req, res) => {
     });
 };
 
-// in the format [{timestamp, value, type, unit, usagePointId}]
-// grouped by usagePointId
+/**
+ * format the data from database to be used by the front end
+ *
+ * @param {[]object} data {timestamp, value, type, unit, usagePointId}
+ */
 const formatDataFromDB = data => {
   // { usagePointId: [],  ... }
   const tmp = {};
@@ -114,6 +132,12 @@ const formatDataFromDB = data => {
   return graph_data;
 };
 
+/**
+ * get consumption load curve data
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 export const getConsumptionLoadCurve = (req, res) => {
   // Is data in bdd
   getDataForUserByType(req.user.id, 'consumptionLoadCurve').then(data => {
@@ -126,6 +150,12 @@ export const getConsumptionLoadCurve = (req, res) => {
   });
 };
 
+/**
+ * get consumption max power data
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 export const getConsumptionMaxPower = (req, res) => {
   // Is data in bdd
   getDataForUserByType(req.user.id, 'consumptionMaxPower').then(data => {
@@ -138,6 +168,12 @@ export const getConsumptionMaxPower = (req, res) => {
   });
 };
 
+/**
+ * get daily consumption data
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 export const getDailyConsumption = (req, res) => {
   // Is data in bdd
   getDataForUserByType(req.user.id, 'dailyConsumption').then(data => {
@@ -150,6 +186,12 @@ export const getDailyConsumption = (req, res) => {
   });
 };
 
+/**
+ * get daily production data
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 export const getDailyProduction = (req, res) => {
   // Is data in bdd
   getDataForUserByType(req.user.id, 'dailyProduction').then(data => {

@@ -2,6 +2,9 @@ const Sequelize = require('sequelize');
 
 export const sequelize = new Sequelize(process.env.DATABASE_URL);
 
+/**
+ * Defines the user schema in the database
+ */
 export const User = sequelize.define('user', {
   usagePointId: Sequelize.STRING,
   firstname: Sequelize.STRING,
@@ -13,6 +16,7 @@ export const User = sequelize.define('user', {
 });
 
 /**
+ * Defines the data schema in the database
  * type: ConsumptionLoadCurve, ConsumptionMaxPower, DailyConsumption, DailyProduction
  */
 export const Data = sequelize.define('data', {
