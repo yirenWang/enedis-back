@@ -212,7 +212,7 @@ export const refreshData = (req, res, dataType) => {
 export const deleteMyData = (req, res) => {
   return deleteDataForUser(req.user.id)
     .then(affectedRows => {
-      if (affectedRows > 0) return res.send('ok');
+      res.send('ok');
     })
     .catch(err => {
       console.log(err);

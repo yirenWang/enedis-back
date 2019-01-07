@@ -13,7 +13,10 @@ export const createDataForUser = (userId, data, unit, type, usagePointId) => {
 };
 
 export const deleteDataForUser = userId => {
-  return Data.destroy({ where: { userId } });
+  return Data.findAll({ where: { userId } }).then(datas => {
+    datas.foreach(d => d.destroy({ force: true }));
+  });
+  //return Data.destroy({ where: { userId } });
 };
 
 export const getDataForUserByType = (userId, type) => {
